@@ -1,0 +1,1253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Untold Story — Sreehari Ramachandran</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Syne:wght@400;500;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0c0a08; --paper: #141210; --warm: #f0ede8; --mid: #8a8278;
+      --faint: #2a2620; --gold: #c8963c; --gold-lt: rgba(200,150,60,.12);
+      --teal: #1b6b6b; --serif: 'Cormorant Garamond', Georgia, serif;
+      --sans: 'Syne', system-ui, sans-serif; --ease: cubic-bezier(.4,0,.2,1);
+    }
+    html { scroll-behavior: smooth; font-size: 16px; }
+    body { background: var(--bg); color: var(--warm); font-family: var(--sans); -webkit-font-smoothing: antialiased; overflow-x: hidden; cursor: none; }
+    a { color: inherit; text-decoration: none; }
+
+    /* CURSOR */
+    #c-dot { position:fixed; top:0; left:0; width:8px; height:8px; background:var(--gold); border-radius:50%; pointer-events:none; z-index:9999; transform:translate(-50%,-50%); transition:transform .08s; }
+    #c-ring { position:fixed; top:0; left:0; width:38px; height:38px; border:1.5px solid rgba(200,150,60,.6); border-radius:50%; pointer-events:none; z-index:9998; transform:translate(-50%,-50%); transition:width .22s var(--ease),height .22s var(--ease),border-color .22s; }
+    body.hov #c-ring { width:60px; height:60px; border-color:var(--gold); }
+
+    /* HEADER */
+    header { position:fixed; top:0; left:0; right:0; z-index:200; display:flex; align-items:center; justify-content:space-between; padding:1.4rem clamp(1.5rem,5vw,4rem); background:transparent; transition:background .5s,border-color .5s; border-bottom:1px solid transparent; }
+    header.stuck { background:rgba(12,10,8,.92); backdrop-filter:blur(14px); border-color:var(--faint); }
+    .logo { font-family:var(--serif); font-size:1.1rem; font-weight:400; letter-spacing:.02em; line-height:1.2; }
+    .logo em { display:block; font-style:normal; font-family:var(--sans); font-size:.6rem; letter-spacing:.2em; text-transform:uppercase; color:var(--mid); margin-top:2px; }
+    nav { display:flex; gap:2rem; align-items:center; }
+    nav a { font-size:.72rem; letter-spacing:.14em; text-transform:uppercase; color:var(--mid); transition:color .25s; position:relative; }
+    nav a::after { content:''; position:absolute; bottom:-3px; left:0; width:0; height:1px; background:var(--gold); transition:width .3s var(--ease); }
+    nav a:hover { color:var(--warm); }
+    nav a:hover::after { width:100%; }
+    .nav-back { display:flex; align-items:center; gap:.5rem; color:var(--gold) !important; }
+    .nav-back::after { display:none !important; }
+    .nav-back svg { width:14px; height:14px; }
+
+    /* ═══════════════════════════
+       CINEMATIC HERO
+    ═══════════════════════════ */
+    .story-hero {
+      position: relative;
+      min-height: 100svh;
+      display: flex; flex-direction: column;
+      justify-content: flex-end;
+      overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute; inset: 0; z-index: 0;
+    }
+    /* Animated dark gradient background with grain */
+    .hero-bg::before {
+      content: '';
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 60% 40%, rgba(27,107,107,.25) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 50% at 20% 70%, rgba(200,150,60,.12) 0%, transparent 55%),
+        linear-gradient(180deg, #0c0a08 0%, #1a1208 50%, #0c0a08 100%);
+      animation: bgShift 12s ease-in-out infinite alternate;
+    }
+    @keyframes bgShift {
+      0%  { background-position: 0% 0%; opacity:1; }
+      100%{ background-position: 100% 100%; opacity:.85; }
+    }
+    /* Film grain overlay */
+    .hero-bg::after {
+      content: '';
+      position: absolute; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      opacity: .6; pointer-events: none;
+    }
+    /* Big SVG world map silhouette */
+    .hero-map {
+      position: absolute; inset: 0; z-index: 1;
+      display: flex; align-items: center; justify-content: center;
+      opacity: .07;
+    }
+    .hero-map svg { width: 90%; height: auto; }
+
+    .hero-content {
+      position: relative; z-index: 10;
+      padding: 0 clamp(1.5rem,5vw,5rem) clamp(3rem,8vw,6rem);
+    }
+    .story-eyebrow {
+      font-size: .65rem; letter-spacing: .35em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 1.5rem;
+      display: flex; align-items: center; gap: 1rem;
+      opacity: 0; animation: fadeUp .7s var(--ease) .3s forwards;
+    }
+    .story-eyebrow::before { content: ''; width: 40px; height: 1px; background: var(--gold); }
+    .story-h1 {
+      font-family: var(--serif); font-weight: 300;
+      font-size: clamp(4rem,10vw,9rem); line-height: .95;
+      letter-spacing: -.02em;
+      opacity: 0; animation: fadeUp .9s var(--ease) .45s forwards;
+    }
+    .story-h1 em { font-style: italic; color: var(--gold); }
+    .story-h1 span { display: block; }
+    .story-sub {
+      margin-top: 2rem; max-width: 55ch;
+      font-family: var(--serif); font-size: clamp(1.1rem,2vw,1.45rem);
+      font-weight: 300; line-height: 1.55; color: rgba(240,237,232,.6);
+      opacity: 0; animation: fadeUp .7s var(--ease) .65s forwards;
+    }
+    /* Scroll indicator line */
+    .hero-scroll-line {
+      position: absolute; bottom: 0; left: clamp(1.5rem,5vw,5rem);
+      width: 1px; height: 80px;
+      background: linear-gradient(to bottom, transparent, var(--gold));
+      opacity: 0; animation: fadeIn 1s var(--ease) 1.2s forwards;
+    }
+    @keyframes fadeIn { to { opacity: .5; } }
+    /* Floating chapter count */
+    .hero-chapters {
+      position: absolute; right: clamp(1.5rem,5vw,5rem); bottom: clamp(3rem,8vw,6rem);
+      z-index: 10; text-align: right;
+      opacity: 0; animation: fadeUp .6s var(--ease) 1s forwards;
+    }
+    .hero-chapters strong { font-family:var(--serif); font-size:3rem; font-weight:300; color:var(--gold); line-height:1; }
+    .hero-chapters span { display:block; font-size:.6rem; letter-spacing:.2em; text-transform:uppercase; color:var(--mid); margin-top:.3rem; }
+
+    /* ═══════════════════════════
+       INTRO MANIFESTO
+    ═══════════════════════════ */
+    .manifesto {
+      padding: clamp(4rem,10vw,8rem) clamp(1.5rem,5vw,5rem);
+      display: grid; grid-template-columns: 1fr 2fr; gap: 4rem; align-items: start;
+      border-bottom: 1px solid var(--faint);
+    }
+    .manifesto-label { font-size:.65rem; letter-spacing:.22em; text-transform:uppercase; color:var(--gold); padding-top:.4rem; }
+    .manifesto-text { font-family:var(--serif); font-size:clamp(1.4rem,2.5vw,2.2rem); font-weight:300; line-height:1.5; color:rgba(240,237,232,.85); }
+    .manifesto-text em { font-style:italic; color:var(--gold); }
+
+    /* ═══════════════════════════
+       CHAPTER SYSTEM
+    ═══════════════════════════ */
+    .chapter {
+      padding: clamp(4rem,10vw,8rem) clamp(1.5rem,5vw,5rem);
+      border-bottom: 1px solid var(--faint);
+      position: relative;
+    }
+    .chapter-num {
+      font-family: var(--serif); font-size: 7rem; font-weight: 300;
+      font-style: italic; color: var(--faint); line-height: 1;
+      position: absolute; top: 3rem; right: clamp(1.5rem,5vw,5rem);
+      pointer-events: none; user-select: none;
+    }
+    .chapter-header { margin-bottom: 3rem; }
+    .chapter-tag { font-size:.6rem; letter-spacing:.3em; text-transform:uppercase; color:var(--gold); margin-bottom:.8rem; }
+    .chapter-title { font-family:var(--serif); font-size:clamp(2rem,5vw,3.8rem); font-weight:300; line-height:1.1; }
+    .chapter-title em { font-style:italic; color:var(--gold); }
+
+    /* ── MEDIA GRID ── */
+    .media-grid { display:grid; gap:3px; }
+    .media-grid.cols-2 { grid-template-columns:1fr 1fr; }
+    .media-grid.cols-3 { grid-template-columns:2fr 1fr 1fr; }
+    .media-grid.cols-3-rev { grid-template-columns:1fr 1fr 2fr; }
+    .media-grid.cols-tall { grid-template-columns:1fr 1.4fr; }
+    .media-cell {
+      position: relative; overflow: hidden;
+      background: var(--paper);
+    }
+    .media-cell.tall { grid-row: span 2; }
+    .media-cell img,
+    .media-cell video,
+    .media-cell .placeholder-img {
+      width: 100%; height: 100%; object-fit: cover; display: block;
+      transition: transform .7s var(--ease), filter .5s;
+      min-height: 240px;
+    }
+    .media-cell:hover img,
+    .media-cell:hover .placeholder-img { transform: scale(1.04); }
+    .media-caption {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      padding: 1.5rem 1.2rem .9rem;
+      background: linear-gradient(transparent, rgba(0,0,0,.7));
+      font-size: .72rem; letter-spacing: .08em; color: rgba(255,255,255,.75);
+      opacity: 0; transition: opacity .3s;
+    }
+    .media-cell:hover .media-caption { opacity: 1; }
+
+    /* Placeholder image cells with SVG art */
+    .placeholder-img {
+      display: flex !important; align-items: center; justify-content: center;
+      cursor: none;
+    }
+
+    /* ── VIDEO CELL ── */
+    .video-cell {
+      position: relative; overflow: hidden; background: #000;
+    }
+    .video-cell video {
+      width: 100%; height: 100%; object-fit: cover; min-height: 280px;
+    }
+    .video-play-btn {
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      background: rgba(0,0,0,.35); transition: background .3s; cursor: none;
+    }
+    .video-play-btn:hover { background: rgba(0,0,0,.15); }
+    .play-circle {
+      width: 64px; height: 64px; border-radius: 50%;
+      border: 2px solid rgba(255,255,255,.8);
+      display: flex; align-items: center; justify-content: center;
+      transition: transform .3s var(--ease), border-color .3s;
+    }
+    .video-play-btn:hover .play-circle { transform: scale(1.1); border-color: var(--gold); }
+    .play-circle svg { width: 22px; height: 22px; fill: white; margin-left: 4px; }
+    .video-cell.playing .video-play-btn { opacity: 0; pointer-events: none; }
+
+    /* ── YOUTUBE EMBED ── */
+    .yt-wrapper {
+      position: relative; padding-top: 56.25%; overflow: hidden; background: #000;
+    }
+    .yt-wrapper iframe {
+      position: absolute; inset: 0; width: 100%; height: 100%; border: none;
+    }
+    .yt-thumb {
+      position: absolute; inset: 0; cursor: none;
+      transition: opacity .4s;
+    }
+    .yt-thumb img { width:100%; height:100%; object-fit:cover; }
+    .yt-thumb .video-play-btn { position:absolute; inset:0; }
+    .yt-wrapper.active .yt-thumb { opacity:0; pointer-events:none; }
+
+    /* ── QUOTE BLOCK ── */
+    .pull-quote {
+      padding: 3rem 0; border-top: 1px solid var(--faint); border-bottom: 1px solid var(--faint);
+      margin: 3rem 0;
+    }
+    .pull-quote blockquote {
+      font-family: var(--serif); font-size: clamp(1.4rem,3vw,2.2rem);
+      font-weight: 300; font-style: italic; line-height: 1.4;
+      color: rgba(240,237,232,.8);
+    }
+    .pull-quote blockquote em { color: var(--gold); font-style: normal; }
+    .pull-quote cite { display:block; margin-top:1rem; font-size:.7rem; letter-spacing:.15em; text-transform:uppercase; color:var(--mid); }
+
+    /* ── NARRATIVE TEXT ── */
+    .narrative {
+      max-width: 68ch; font-family: var(--serif);
+      font-size: clamp(1.05rem,1.5vw,1.2rem); line-height: 1.75;
+      color: rgba(240,237,232,.7); margin: 2.5rem 0;
+    }
+    .narrative strong { color: var(--warm); font-weight: 600; }
+
+    /* ── STAT ROW ── */
+    .stat-row { display:flex; flex-wrap:wrap; gap:3rem; margin:3rem 0; }
+    .stat-item strong { display:block; font-family:var(--serif); font-size:3rem; font-weight:300; color:var(--gold); line-height:1; }
+    .stat-item span { font-size:.65rem; letter-spacing:.18em; text-transform:uppercase; color:var(--mid); margin-top:.3rem; display:block; }
+
+    /* ── LOCATION TAG ── */
+    .loc-badge {
+      display:inline-flex; align-items:center; gap:.5rem;
+      font-size:.65rem; letter-spacing:.15em; text-transform:uppercase;
+      color:var(--gold); border:1px solid rgba(200,150,60,.3);
+      padding:.35rem .9rem; border-radius:999px; margin-bottom:1.5rem;
+    }
+    .loc-badge svg { width:12px; height:12px; }
+
+    /* ── TIMELINE STRIP ── */
+    .timeline-strip {
+      display: flex; overflow-x: auto; gap: 0;
+      scrollbar-width: none; -ms-overflow-style: none;
+      margin: 3rem calc(-1 * clamp(1.5rem,5vw,5rem));
+      padding: 0 clamp(1.5rem,5vw,5rem);
+    }
+    .timeline-strip::-webkit-scrollbar { display:none; }
+    .tl-item {
+      flex: 0 0 220px; padding: 1.5rem 1.5rem 1.5rem 0;
+      border-right: 1px solid var(--faint); position: relative;
+    }
+    .tl-item:last-child { border-right:none; }
+    .tl-year { font-family:var(--serif); font-size:1.8rem; font-weight:300; color:var(--gold); line-height:1; margin-bottom:.5rem; }
+    .tl-event { font-size:.78rem; color:rgba(240,237,232,.6); line-height:1.5; }
+    .tl-dot { width:8px; height:8px; border-radius:50%; background:var(--gold); margin-bottom:.8rem; }
+
+    /* ── IMAGE + TEXT SPLIT ── */
+    .split-row {
+      display:grid; grid-template-columns:1fr 1fr; gap:4rem; align-items:center;
+      margin:3rem 0;
+    }
+    .split-row.reverse { direction:rtl; }
+    .split-row.reverse > * { direction:ltr; }
+    .split-img { overflow:hidden; border-radius:2px; }
+    .split-img .placeholder-img { min-height:360px; }
+    .split-text { }
+    .split-text h3 { font-family:var(--serif); font-size:clamp(1.5rem,3vw,2.2rem); font-weight:300; margin-bottom:1rem; line-height:1.2; }
+    .split-text h3 em { font-style:italic; color:var(--gold); }
+
+    /* ── GALLERY MOSAIC ── */
+    .mosaic {
+      display:grid;
+      grid-template-columns: 1.5fr 1fr 1fr;
+      grid-template-rows: 260px 260px;
+      gap:3px;
+      margin:2rem 0;
+    }
+    .mosaic .media-cell:first-child { grid-row: 1 / 3; }
+
+    /* ── INSTAGRAM-STYLE REEL ── */
+    .reel-strip {
+      display:flex; gap:3px; overflow-x:auto; scrollbar-width:none;
+      margin:2rem calc(-1 * clamp(1.5rem,5vw,5rem));
+      padding:0 clamp(1.5rem,5vw,5rem);
+    }
+    .reel-strip::-webkit-scrollbar { display:none; }
+    .reel-item {
+      flex:0 0 200px; aspect-ratio:9/16; overflow:hidden; position:relative;
+      background:var(--paper); border-radius:2px;
+    }
+    .reel-item .placeholder-img { min-height:100%; }
+
+    /* FOOTER */
+    .story-footer {
+      padding:clamp(3rem,8vw,5rem) clamp(1.5rem,5vw,5rem);
+      display:flex; align-items:center; justify-content:space-between;
+      border-top:1px solid var(--faint);
+    }
+    .back-btn {
+      display:inline-flex; align-items:center; gap:.8rem;
+      font-size:.72rem; letter-spacing:.15em; text-transform:uppercase;
+      color:var(--gold); transition:gap .3s;
+    }
+    .back-btn:hover { gap:1.2rem; }
+    .back-btn svg { width:20px; height:20px; }
+    .footer-sig { font-family:var(--serif); font-size:1rem; font-style:italic; color:var(--mid); }
+
+    /* ANIMATIONS */
+    @keyframes fadeUp { from{opacity:0;transform:translateY(22px)} to{opacity:1;transform:none} }
+    .reveal { opacity:0; transform:translateY(30px); transition:opacity .8s var(--ease),transform .8s var(--ease); }
+    .reveal.in { opacity:1; transform:none; }
+    .reveal-left { opacity:0; transform:translateX(-30px); transition:opacity .8s var(--ease),transform .8s var(--ease); }
+    .reveal-left.in { opacity:1; transform:none; }
+    .reveal-right { opacity:0; transform:translateX(30px); transition:opacity .8s var(--ease),transform .8s var(--ease); }
+    .reveal-right.in { opacity:1; transform:none; }
+
+    /* RESPONSIVE */
+    @media(max-width:900px) {
+      .manifesto { grid-template-columns:1fr; gap:1.5rem; }
+      .media-grid.cols-3,.media-grid.cols-3-rev { grid-template-columns:1fr 1fr; }
+      .media-grid.cols-tall { grid-template-columns:1fr; }
+      .split-row,.split-row.reverse { grid-template-columns:1fr; direction:ltr; gap:2rem; }
+      .mosaic { grid-template-columns:1fr 1fr; grid-template-rows:auto; }
+      .mosaic .media-cell:first-child { grid-row:auto; }
+      .chapter-num { font-size:4rem; }
+    }
+    @media(max-width:600px) {
+      .media-grid.cols-2 { grid-template-columns:1fr; }
+      nav { gap:1rem; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="c-dot"></div>
+<div id="c-ring"></div>
+
+<!-- HEADER -->
+<header id="hdr">
+  <a href="index.html" class="logo">Sreehari Ramachandran<em>The Untold Story</em></a>
+  <nav>
+    <a href="index.html#experience">Portfolio</a>
+    <a href="index.html#projects">Projects</a>
+    <a href="index.html#contact">Contact</a>
+    <a href="index.html" class="nav-back">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+      Back
+    </a>
+  </nav>
+</header>
+
+<!-- ═══════════════════════════════════════
+     CINEMATIC HERO
+═══════════════════════════════════════ -->
+<div class="story-hero">
+  <div class="hero-bg">
+    <div class="hero-map">
+      <!-- Simplified world map paths -->
+      <svg viewBox="0 0 1200 600" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M150,120 Q180,100 210,115 Q240,130 260,110 L280,100 Q310,90 330,110 Q350,130 370,120 Q390,110 410,120 L430,140 Q450,160 470,150 Q490,140 510,155 Q530,170 550,160 Q570,150 600,160 Q630,170 650,155 Q670,140 700,150 Q730,160 750,145 Q770,130 800,140 Q830,150 850,135 Q880,120 910,130 L940,145 Q960,160 980,150 Q1000,140 1020,155 Q1040,170 1060,160" stroke="white" stroke-width="1.5" opacity=".4"/>
+        <!-- India rough -->
+        <path d="M680,200 Q700,190 720,200 Q740,220 730,250 Q720,280 700,300 Q680,320 670,300 Q660,280 665,250 Q668,220 680,200Z" stroke="white" stroke-width="1.5" opacity=".7" fill="rgba(200,150,60,.15)"/>
+        <!-- Germany rough -->
+        <path d="M490,145 Q510,135 525,150 Q535,165 525,180 Q515,195 500,188 Q485,180 485,165 Q485,152 490,145Z" stroke="white" stroke-width="1.5" opacity=".7" fill="rgba(27,107,107,.2)"/>
+        <!-- Connecting line India->Germany -->
+        <path d="M700,260 Q600,200 520,165" stroke="rgba(200,150,60,.4)" stroke-width="1" stroke-dasharray="6,4"/>
+        <circle cx="700" cy="260" r="5" fill="var(--gold)" opacity=".8"/>
+        <circle cx="520" cy="165" r="5" fill="#1b6b6b" opacity=".8"/>
+        <!-- Finland/Aalto -->
+        <circle cx="540" cy="120" r="4" fill="var(--gold)" opacity=".6"/>
+        <path d="M520,165 Q530,145 540,124" stroke="rgba(200,150,60,.3)" stroke-width="1" stroke-dasharray="4,3"/>
+      </svg>
+    </div>
+  </div>
+
+  <div class="hero-content">
+    <div class="story-eyebrow">The Untold Story</div>
+    <h1 class="story-h1">
+      <span>Beyond</span>
+      <span>the <em>résumé.</em></span>
+    </h1>
+    <p class="story-sub">
+      From the backwaters of Kerala to the wind turbines of Dortmund — a life lived at the intersection of curiosity, courage, and deep water.
+    </p>
+  </div>
+
+  <div class="hero-scroll-line"></div>
+  <div class="hero-chapters">
+    <strong>7</strong>
+    <span>Chapters</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     MANIFESTO
+═══════════════════════════════════════ -->
+<div class="manifesto reveal">
+  <p class="manifesto-label">Who I am beyond work</p>
+  <p class="manifesto-text">
+    The CV lists titles. This page tells you I've held my breath 20 metres underwater, built a brain-controlled robot arm at 17, crossed continents alone with a backpack and a curiosity that never quite settled. <em>This is the rest of the story.</em>
+  </p>
+</div>
+
+<!-- ═══════════════════════════════════════
+     CHAPTER 1 — FREEDIVING & THE DEEP
+═══════════════════════════════════════ -->
+<section class="chapter" id="ch1">
+  <div class="chapter-num">01</div>
+  <div class="chapter-header reveal">
+    <p class="chapter-tag">Adventure · Ocean · Breath</p>
+    <h2 class="chapter-title">The <em>silence</em><br>beneath the surface.</h2>
+  </div>
+
+  <div class="loc-badge reveal">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+    Kerala, India · Arabian Sea
+  </div>
+
+  <div class="media-grid cols-3 reveal">
+    <div class="media-cell tall">
+      <div class="placeholder-img">
+        <svg viewBox="0 0 400 560" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%">
+          <defs>
+            <linearGradient id="sea1" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#0a3a5c"/>
+              <stop offset="60%" stop-color="#05203a"/>
+              <stop offset="100%" stop-color="#020e1c"/>
+            </linearGradient>
+            <radialGradient id="light1" cx="50%" cy="15%" r="50%">
+              <stop offset="0%" stop-color="rgba(100,200,220,0.3)"/>
+              <stop offset="100%" stop-color="transparent"/>
+            </radialGradient>
+          </defs>
+          <rect width="400" height="560" fill="url(#sea1)"/>
+          <rect width="400" height="560" fill="url(#light1)"/>
+          <!-- Light rays -->
+          <g opacity=".15" fill="rgba(150,220,240,1)">
+            <path d="M180,0 L160,560 L185,560 L200,0Z"/>
+            <path d="M210,0 L195,560 L215,560 L225,0Z"/>
+            <path d="M240,0 L230,560 L248,560 L255,0Z"/>
+          </g>
+          <!-- Diver silhouette -->
+          <g transform="translate(200,260)" fill="rgba(5,15,30,0.9)" stroke="rgba(100,200,220,0.3)" stroke-width="1">
+            <!-- Head -->
+            <circle cx="0" cy="-80" r="18"/>
+            <!-- Body -->
+            <path d="M-10,-62 L-12,0 L12,0 L10,-62Z"/>
+            <!-- Arms streamlined -->
+            <path d="M-12,-40 L-50,-60 L-52,-55 L-12,-32Z"/>
+            <path d="M12,-40 L50,-60 L52,-55 L12,-32Z"/>
+            <!-- Legs/fins -->
+            <path d="M-12,0 L-20,80 L-8,82 L0,15 L8,82 L20,80 L12,0Z"/>
+            <!-- Fins -->
+            <path d="M-20,80 L-45,110 L-8,82Z"/>
+            <path d="M20,80 L45,110 L8,82Z"/>
+          </g>
+          <!-- Bubbles -->
+          <g fill="none" stroke="rgba(150,220,240,0.4)" stroke-width="1">
+            <circle cx="185" cy="150" r="4"/>
+            <circle cx="195" cy="120" r="3"/>
+            <circle cx="210" cy="95" r="5"/>
+            <circle cx="200" cy="70" r="2.5"/>
+            <circle cx="192" cy="45" r="3.5"/>
+          </g>
+          <!-- Depth text -->
+          <text x="200" y="540" text-anchor="middle" fill="rgba(150,220,240,0.3)" font-family="'Syne',sans-serif" font-size="11" letter-spacing="3">–20m · FREE DIVE</text>
+        </svg>
+      </div>
+      <div class="media-caption">Freediving off Kerala coast · Add your photo here</div>
+    </div>
+    <div class="media-cell">
+      <div class="placeholder-img">
+        <svg viewBox="0 0 400 280" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%">
+          <defs>
+            <linearGradient id="dawn" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#1a0a00"/>
+              <stop offset="40%" stop-color="#c84a1a"/>
+              <stop offset="70%" stop-color="#f07030"/>
+              <stop offset="100%" stop-color="#0a2030"/>
+            </linearGradient>
+          </defs>
+          <rect width="400" height="280" fill="url(#dawn)"/>
+          <!-- Sun -->
+          <circle cx="200" cy="175" r="40" fill="rgba(255,180,60,0.6)"/>
+          <circle cx="200" cy="175" r="28" fill="rgba(255,200,80,0.8)"/>
+          <!-- Water reflection -->
+          <rect x="0" y="175" width="400" height="105" fill="rgba(5,20,40,0.7)"/>
+          <path d="M0,175 Q100,165 200,175 Q300,185 400,175 L400,200 Q300,210 200,200 Q100,190 0,200Z" fill="rgba(200,100,30,0.3)"/>
+          <!-- Boat silhouette -->
+          <path d="M100,175 Q200,165 300,175 L290,185 Q200,190 110,185Z" fill="rgba(5,10,20,0.9)"/>
+          <line x1="200" y1="175" x2="200" y2="120" stroke="rgba(5,10,20,0.8)" stroke-width="2"/>
+          <text x="200" y="265" text-anchor="middle" fill="rgba(255,180,60,0.4)" font-family="'Syne',sans-serif" font-size="10" letter-spacing="3">DAWN DIVE · VARKALA</text>
+        </svg>
+      </div>
+      <div class="media-caption">Sunrise boat out to the dive site</div>
+    </div>
+    <div class="media-cell">
+      <div class="placeholder-img">
+        <svg viewBox="0 0 400 280" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%">
+          <rect width="400" height="280" fill="#051525"/>
+          <!-- Coral / reef -->
+          <g fill="rgba(27,107,107,0.6)">
+            <path d="M50,280 Q60,220 70,200 Q80,180 90,200 Q100,220 110,280Z"/>
+            <path d="M80,280 Q95,230 105,210 Q115,190 125,210 Q135,230 140,280Z"/>
+            <path d="M300,280 Q315,225 325,205 Q335,185 345,205 Q355,225 360,280Z"/>
+            <path d="M330,280 Q340,235 350,215 Q360,195 370,215 Q380,235 385,280Z"/>
+          </g>
+          <g fill="rgba(200,150,60,0.5)">
+            <path d="M160,280 Q170,250 178,235 Q186,220 195,235 Q204,250 210,280Z"/>
+            <path d="M250,280 Q258,240 265,222 Q272,205 280,222 Q288,240 295,280Z"/>
+          </g>
+          <!-- Fish -->
+          <g fill="rgba(255,150,50,0.7)">
+            <ellipse cx="170" cy="150" rx="18" ry="10"/>
+            <path d="M152,150 L138,140 L138,160Z"/>
+            <ellipse cx="280" cy="100" rx="14" ry="8"/>
+            <path d="M266,100 L254,92 L254,108Z"/>
+          </g>
+          <text x="200" y="268" text-anchor="middle" fill="rgba(100,200,200,0.3)" font-family="'Syne',sans-serif" font-size="10" letter-spacing="3">REEF LIFE · LAKSHADWEEP</text>
+        </svg>
+      </div>
+      <div class="media-caption">Reef exploration · Lakshadweep</div>
+    </div>
+  </div>
+
+  <div class="pull-quote reveal">
+    <blockquote>
+      "At twenty metres the ocean stops being a place and becomes a <em>feeling</em>. That's where I learned what real quiet sounds like."
+    </blockquote>
+    <cite>— Sreehari, on freediving with the FON Water Sports Community, Cochin 2018–2022</cite>
+  </div>
+
+  <div class="stat-row reveal">
+    <div class="stat-item"><strong>20m</strong><span>Max depth (freedive)</span></div>
+    <div class="stat-item"><strong>4 yrs</strong><span>Active FON member</span></div>
+    <div class="stat-item"><strong>∞</strong><span>Respect for the ocean</span></div>
+  </div>
+
+  <p class="narrative reveal">
+    Free diving — without tanks, without noise — became a practice in <strong>presence</strong>. The discipline of breath-hold training fed directly into how I approach hard problems: slow down, conserve energy, go deeper than is comfortable, and trust yourself to surface. The FON water sporting community in Cochin was my tribe for four years, and those early mornings on the Arabian Sea are some of the most honest hours of my life.
+  </p>
+</section>
+
+<!-- ═══════════════════════════════════════
+     CHAPTER 2 — MARTIAL ARTS
+═══════════════════════════════════════ -->
+<section class="chapter" id="ch2" style="background:var(--paper)">
+  <div class="chapter-num" style="color:#1e1c18">02</div>
+  <div class="chapter-header reveal">
+    <p class="chapter-tag">Discipline · Combat · Mind</p>
+    <h2 class="chapter-title">Mixed <em>martial arts</em><br>and the art of falling.</h2>
+  </div>
+
+  <div class="split-row reveal">
+    <div class="split-img">
+      <div class="placeholder-img">
+        <svg viewBox="0 0 500 400" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;min-height:380px">
+          <rect width="500" height="400" fill="#0e0c0a"/>
+          <!-- Octagon ring silhouette -->
+          <polygon points="250,50 350,80 400,180 380,290 280,360 170,360 80,280 70,170 120,75" fill="none" stroke="rgba(200,150,60,0.3)" stroke-width="2"/>
+          <polygon points="250,70 340,95 385,185 368,280 278,342 182,342 98,270 88,175 132,88" fill="rgba(200,150,60,0.04)"/>
+          <!-- Fighter 1 silhouette -->
+          <g fill="rgba(200,150,60,0.75)" transform="translate(185,130)">
+            <circle cx="0" cy="0" r="20"/>
+            <path d="M-15,20 L-20,90 L20,90 L15,20Z"/>
+            <path d="M-15,35 L-55,70 L-45,82 L-12,50Z"/>
+            <path d="M15,35 L30,75 L20,82 L12,50Z"/>
+            <path d="M-20,90 L-28,170 L-10,172 L0,120 L10,172 L28,170 L20,90Z"/>
+          </g>
+          <!-- Fighter 2 silhouette -->
+          <g fill="rgba(27,107,107,0.75)" transform="translate(310,130)">
+            <circle cx="0" cy="0" r="20"/>
+            <path d="M-15,20 L-18,90 L18,90 L15,20Z"/>
+            <path d="M15,35 L55,70 L45,82 L12,50Z"/>
+            <path d="M-15,35 L-30,75 L-20,82 L-12,50Z"/>
+            <path d="M-18,90 L-26,170 L-8,172 L0,120 L8,172 L26,170 L18,90Z"/>
+          </g>
+          <!-- Sweat/impact particles -->
+          <g fill="rgba(255,255,255,0.3)">
+            <circle cx="248" cy="120" r="2"/><circle cx="255" cy="112" r="1.5"/>
+            <circle cx="242" cy="115" r="1"/><circle cx="258" cy="125" r="2.5"/>
+          </g>
+          <text x="250" y="390" text-anchor="middle" fill="rgba(200,150,60,0.3)" font-family="'Syne',sans-serif" font-size="11" letter-spacing="3">MMA · DISCIPLINE</text>
+        </svg>
+      </div>
+    </div>
+    <div class="split-text">
+      <p class="narrative" style="margin-top:0">
+        Mixed martial arts taught me something that no engineering textbook could: <strong>how to be comfortable being uncomfortable</strong>. You can't think your way out of an armbar. You have to train your body until the right response is instinct.
+      </p>
+      <p class="narrative">
+        The mat is a great equaliser. Rank, degree, title — none of it matters when you're sparring. What matters is <strong>preparation, humility, and the willingness to get back up</strong>. I carry those three things into every technical challenge.
+      </p>
+      <div class="stat-row" style="margin:1.5rem 0 0">
+        <div class="stat-item"><strong>3+</strong><span>Years training</span></div>
+        <div class="stat-item"><strong>0</strong><span>Times I quit after a loss</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     CHAPTER 3 — FROM KERALA TO DORTMUND
+═══════════════════════════════════════ -->
+<section class="chapter" id="ch3">
+  <div class="chapter-num">03</div>
+  <div class="chapter-header reveal">
+    <p class="chapter-tag">Migration · Identity · Courage</p>
+    <h2 class="chapter-title">8,000 km from<br>home — <em>alone.</em></h2>
+  </div>
+
+  <div class="timeline-strip reveal">
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-year">2018</div>
+      <div class="tl-event">Palakkad, Kerala. Engineering begins. First robot arm. First prize.</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-year">2021</div>
+      <div class="tl-event">IEEE hackathon win. Heart monitor deployed. Patent idea born.</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-year">2022</div>
+      <div class="tl-event">IBM Bengaluru. First salary. Then — apply to TU Dortmund. Accepted. Pack a bag.</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-year">2023</div>
+      <div class="tl-event">First German winter. First semester in German. The loneliness. The learning. Both worth it.</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-year">2024</div>
+      <div class="tl-event">PSI Software. ie3 research. Aalto assignment. EnerCred patent filed. Finding the rhythm.</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-year">2025</div>
+      <div class="tl-event">Still building. Still learning. FISU games. The story isn't finished.</div>
+    </div>
+  </div>
+
+  <div class="media-grid cols-2 reveal" style="margin-top:3rem">
+    <div class="media-cell">
+      <div class="placeholder-img">
+        <svg viewBox="0 0 500 340" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;min-height:300px">
+          <defs>
+            <linearGradient id="kerala" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#0a3020"/>
+              <stop offset="100%" stop-color="#041510"/>
+            </linearGradient>
+          </defs>
+          <rect width="500" height="340" fill="url(#kerala)"/>
+          <!-- Palm trees -->
+          <g fill="rgba(20,80,40,0.8)">
+            <path d="M80,340 L85,180 L90,340Z"/>
+            <path d="M85,180 Q40,140 20,120 Q60,130 85,180Z"/>
+            <path d="M85,180 Q130,135 155,115 Q115,130 85,180Z"/>
+            <path d="M85,180 Q55,155 30,160 Q60,155 85,180Z"/>
+            <path d="M85,180 Q115,150 140,160 Q110,150 85,180Z"/>
+            <ellipse cx="85" cy="178" rx="6" ry="8" fill="rgba(15,60,30,0.9)"/>
+          </g>
+          <g fill="rgba(20,80,40,0.7)">
+            <path d="M420,340 L415,200 L410,340Z"/>
+            <path d="M415,200 Q460,155 485,135 Q448,148 415,200Z"/>
+            <path d="M415,200 Q370,150 348,130 Q385,148 415,200Z"/>
+            <ellipse cx="415" cy="198" rx="6" ry="8" fill="rgba(15,60,30,0.9)"/>
+          </g>
+          <!-- Backwaters -->
+          <path d="M0,240 Q125,220 250,235 Q375,250 500,235 L500,340 L0,340Z" fill="rgba(10,60,80,0.5)"/>
+          <path d="M0,255 Q125,240 250,252 Q375,264 500,252" stroke="rgba(100,200,180,0.2)" stroke-width="1" fill="none"/>
+          <!-- Sun -->
+          <circle cx="250" cy="100" r="35" fill="rgba(255,180,50,0.4)"/>
+          <circle cx="250" cy="100" r="22" fill="rgba(255,200,80,0.5)"/>
+          <!-- Boat -->
+          <path d="M185,242 Q250,232 315,242 L305,252 Q250,258 195,252Z" fill="rgba(30,15,5,0.8)"/>
+          <line x1="250" y1="242" x2="250" y2="205" stroke="rgba(30,15,5,0.7)" stroke-width="1.5"/>
+          <text x="250" y="328" text-anchor="middle" fill="rgba(100,200,150,0.35)" font-family="'Syne',sans-serif" font-size="11" letter-spacing="3">KERALA BACKWATERS</text>
+        </svg>
+      </div>
+      <div class="media-caption">Kerala backwaters — where I grew up</div>
+    </div>
+    <div class="media-cell">
+      <div class="placeholder-img">
+        <svg viewBox="0 0 500 340" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;min-height:300px">
+          <defs>
+            <linearGradient id="dortmund" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#0a0e18"/>
+              <stop offset="100%" stop-color="#1a1e2a"/>
+            </linearGradient>
+          </defs>
+          <rect width="500" height="340" fill="url(#dortmund)"/>
+          <!-- City skyline -->
+          <g fill="rgba(30,40,80,0.9)">
+            <!-- Buildings -->
+            <rect x="20" y="180" width="40" height="160"/><rect x="70" y="150" width="35" height="190"/>
+            <rect x="115" y="170" width="30" height="170"/><rect x="155" y="130" width="45" height="210"/>
+            <rect x="210" y="160" width="35" height="180"/><rect x="255" y="140" width="50" height="200"/>
+            <rect x="315" y="155" width="40" height="185"/><rect x="365" y="175" width="30" height="165"/>
+            <rect x="405" y="145" width="45" height="195"/><rect x="460" y="165" width="40" height="175"/>
+          </g>
+          <!-- Windows glow -->
+          <g fill="rgba(200,180,100,0.5)">
+            <rect x="25" y="185" width="6" height="4"/><rect x="35" y="185" width="6" height="4"/>
+            <rect x="75" y="155" width="6" height="4"/><rect x="88" y="165" width="6" height="4"/>
+            <rect x="160" y="135" width="6" height="4"/><rect x="175" y="145" width="6" height="4"/>
+            <rect x="260" y="148" width="6" height="4"/><rect x="278" y="158" width="6" height="4"/>
+            <rect x="410" y="150" width="6" height="4"/><rect x="425" y="162" width="6" height="4"/>
+          </g>
+          <!-- TU Dortmund tower silhouette -->
+          <g fill="rgba(27,107,107,0.7)">
+            <rect x="228" y="80" width="44" height="220"/>
+            <polygon points="250,40 228,80 272,80"/>
+            <rect x="236" y="40" width="8" height="60" fill="rgba(200,150,60,0.6)"/>
+          </g>
+          <!-- Snow / stars -->
+          <g fill="rgba(255,255,255,0.5)">
+            <circle cx="50" cy="60" r="1.5"/><circle cx="120" cy="40" r="1"/>
+            <circle cx="200" cy="55" r="1.5"/><circle cx="350" cy="45" r="1"/>
+            <circle cx="430" cy="70" r="1.5"/><circle cx="480" cy="35" r="1"/>
+          </g>
+          <text x="250" y="328" text-anchor="middle" fill="rgba(100,150,200,0.35)" font-family="'Syne',sans-serif" font-size="11" letter-spacing="3">DORTMUND, GERMANY</text>
+        </svg>
+      </div>
+      <div class="media-caption">Dortmund — my adopted home</div>
+    </div>
+  </div>
+
+  <div class="pull-quote reveal">
+    <blockquote>
+      "Nobody tells you that moving countries alone at 22 means <em>rebuilding yourself</em> from scratch — your social graph, your daily rhythm, your sense of what's normal. I did it once. I'd do it again."
+    </blockquote>
+    <cite>— On relocating from Bengaluru to Dortmund, 2022</cite>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     CHAPTER 4 — ANIME & CREATIVE MIND
+═══════════════════════════════════════ -->
+<section class="chapter" id="ch4" style="background:var(--paper)">
+  <div class="chapter-num" style="color:#1e1c18">04</div>
+  <div class="chapter-header reveal">
+    <p class="chapter-tag">Creativity · Imagination · Story</p>
+    <h2 class="chapter-title">The <em>worlds</em><br>inside stories.</h2>
+  </div>
+
+  <div class="split-row reverse reveal">
+    <div class="split-img">
+      <div class="placeholder-img">
+        <svg viewBox="0 0 500 420" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;min-height:380px">
+          <rect width="500" height="420" fill="#060410"/>
+          <!-- Stars/space -->
+          <g fill="white" opacity=".6">
+            <circle cx="40" cy="30" r="1"/><circle cx="90" cy="55" r="1.5"/>
+            <circle cx="150" cy="20" r="1"/><circle cx="220" cy="45" r="1.5"/>
+            <circle cx="300" cy="25" r="1"/><circle cx="380" cy="50" r="1"/>
+            <circle cx="440" cy="30" r="1.5"/><circle cx="480" cy="60" r="1"/>
+            <circle cx="70" cy="80" r="1"/><circle cx="180" cy="70" r="1.5"/>
+            <circle cx="350" cy="75" r="1"/><circle cx="460" cy="85" r="1.5"/>
+          </g>
+          <!-- Abstract anime-inspired shapes -->
+          <!-- Energy circles -->
+          <circle cx="250" cy="210" r="130" fill="none" stroke="rgba(150,80,255,0.2)" stroke-width="2"/>
+          <circle cx="250" cy="210" r="90" fill="none" stroke="rgba(80,200,255,0.2)" stroke-width="1.5"/>
+          <circle cx="250" cy="210" r="50" fill="rgba(100,50,200,0.15)" stroke="rgba(200,100,255,0.4)" stroke-width="1.5"/>
+          <!-- Character silhouette - standing heroic pose -->
+          <g fill="rgba(200,150,60,0.85)" transform="translate(250,215)">
+            <circle cx="0" cy="-95" r="22"/>
+            <!-- Hair spikes -->
+            <path d="M-10,-117 L-22,-140 L-5,-118Z"/>
+            <path d="M0,-117 L0,-145 L8,-118Z"/>
+            <path d="M10,-117 L22,-140 L5,-118Z"/>
+            <!-- Cape -->
+            <path d="M-20,-75 L-60,30 L-15,20 L-18,-75Z" fill="rgba(200,150,60,0.6)"/>
+            <path d="M20,-75 L60,30 L15,20 L18,-75Z" fill="rgba(200,150,60,0.6)"/>
+            <!-- Body -->
+            <path d="M-18,-73 L-20,0 L20,0 L18,-73Z"/>
+            <!-- Legs -->
+            <path d="M-20,0 L-28,95 L-5,97 L0,30 L5,97 L28,95 L20,0Z"/>
+          </g>
+          <!-- Energy burst lines -->
+          <g stroke="rgba(150,80,255,0.3)" stroke-width="1.5" fill="none">
+            <line x1="250" y1="80" x2="250" y2="50"/>
+            <line x1="340" y1="120" x2="370" y2="100"/>
+            <line x1="370" y1="215" x2="405" y2="215"/>
+            <line x1="160" y1="120" x2="130" y2="100"/>
+            <line x1="130" y1="215" x2="95" y2="215"/>
+          </g>
+          <text x="250" y="408" text-anchor="middle" fill="rgba(150,80,255,0.35)" font-family="'Syne',sans-serif" font-size="11" letter-spacing="3">ANIME · STORYTELLING</text>
+        </svg>
+      </div>
+    </div>
+    <div class="split-text">
+      <p class="narrative" style="margin-top:0">
+        Anime isn't just entertainment. The best of it — <strong>Fullmetal Alchemist, Vinland Saga, Steins;Gate</strong> — are meditations on sacrifice, time, and what it means to chase something impossible with everything you have.
+      </p>
+      <p class="narrative">
+        I grew up watching stories of engineers and scientists who refused to accept the limits of what was known. That's not incidental to my career — it's foundational to it. <strong>Good science fiction taught me to think in systems before I knew what systems thinking was.</strong>
+      </p>
+      <p class="narrative">
+        The same imagination that keeps me watching anime at midnight is the one that asks: what if we could tokenise renewable energy on a blockchain? What if second-life EV batteries could stabilise the grid? What if a 17-year-old in Kerala could build a brain-controlled exoskeleton?
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     CHAPTER 5 — VOLUNTEERING & GIVING BACK
+═══════════════════════════════════════ -->
+<section class="chapter" id="ch5">
+  <div class="chapter-num">05</div>
+  <div class="chapter-header reveal">
+    <p class="chapter-tag">Community · Teaching · Service</p>
+    <h2 class="chapter-title">Teaching the next<br><em>generation</em> to code.</h2>
+  </div>
+
+  <div class="mosaic reveal">
+    <div class="media-cell">
+      <div class="placeholder-img">
+        <svg viewBox="0 0 400 520" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%">
+          <rect width="400" height="520" fill="#0a1a10"/>
+          <!-- Classroom scene -->
+          <g fill="rgba(27,107,107,0.2)">
+            <rect x="0" y="200" width="400" height="320"/>
+          </g>
+          <!-- Blackboard -->
+          <rect x="60" y="80" width="280" height="160" fill="rgba(10,40,20,0.9)" rx="3"/>
+          <rect x="65" y="85" width="270" height="150" fill="rgba(15,60,30,0.8)" rx="2"/>
+          <!-- Code on board -->
+          <g fill="rgba(100,200,150,0.6)" font-family="monospace" font-size="12">
+            <text x="80" y="115">def learn():</text>
+            <text x="100" y="135">    while True:</text>
+            <text x="120" y="155">        grow()</text>
+            <text x="80" y="180">learn()</text>
+          </g>
+          <!-- Students (silhouettes) -->
+          <g fill="rgba(200,180,140,0.7)">
+            <circle cx="100" cy="290" r="18"/>
+            <path d="M85,308 L80,380 L120,380 L115,308Z"/>
+            <circle cx="200" cy="280" r="18"/>
+            <path d="M185,298 L180,370 L220,370 L215,298Z"/>
+            <circle cx="300" cy="290" r="18"/>
+            <path d="M285,308 L280,380 L320,380 L315,308Z"/>
+          </g>
+          <!-- Raised hand -->
+          <path d="M115,290 L115,260 L122,260 L122,290Z" fill="rgba(200,180,140,0.7)"/>
+          <text x="200" y="510" text-anchor="middle" fill="rgba(100,200,150,0.35)" font-family="'Syne',sans-serif" font-size="10" letter-spacing="3">VOLSHIP INDIA</text>
+        </svg>
+      </div>
+      <div class="media-caption">Teaching IT skills at Volship India, Bengaluru</div>
+    </div>
+    <div class="media-cell">
+      <div class="placeholder-img">
+        <svg viewBox="0 0 400 258" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;min-height:258px">
+          <rect width="400" height="258" fill="#0e1f30"/>
+          <!-- FISU stadium outline -->
+          <ellipse cx="200" cy="160" rx="160" ry="80" fill="none" stroke="rgba(200,150,60,0.4)" stroke-width="2"/>
+          <ellipse cx="200" cy="160" rx="130" ry="55" fill="rgba(200,150,60,0.06)"/>
+          <!-- Athletes silhouettes -->
+          <g fill="rgba(200,150,60,0.7)">
+            <circle cx="200" cy="140" r="12"/>
+            <path d="M192,152 L188,200 L212,200 L208,152Z"/>
+            <path d="M192,165 L165,180 L168,190 L192,175Z"/>
+            <path d="M208,165 L235,180 L232,190 L208,175Z"/>
+          </g>
+          <!-- Stars/rings -->
+          <g stroke="rgba(200,150,60,0.5)" stroke-width="1.5" fill="none">
+            <circle cx="140" cy="60" r="14"/>
+            <circle cx="168" cy="60" r="14"/>
+            <circle cx="196" cy="60" r="14"/>
+            <circle cx="224" cy="60" r="14"/>
+            <circle cx="252" cy="60" r="14"/>
+          </g>
+          <text x="200" y="246" text-anchor="middle" fill="rgba(200,150,60,0.35)" font-family="'Syne',sans-serif" font-size="10" letter-spacing="3">FISU GAMES · DUISBURG 2025</text>
+        </svg>
+      </div>
+      <div class="media-caption">FISU World University Games volunteer, Duisburg</div>
+    </div>
+    <div class="media-cell">
+      <div class="placeholder-img">
+        <svg viewBox="0 0 400 258" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;min-height:258px">
+          <rect width="400" height="258" fill="#1a1005"/>
+          <!-- Plastic cleanup / environment -->
+          <g fill="rgba(27,107,107,0.5)">
+            <path d="M0,180 Q100,155 200,170 Q300,185 400,165 L400,258 L0,258Z"/>
+          </g>
+          <!-- Trees -->
+          <g fill="rgba(20,100,40,0.7)">
+            <circle cx="80" cy="135" r="35"/><circle cx="65" cy="150" r="30"/>
+            <rect x="76" y="165" width="12" height="40"/>
+            <circle cx="330" cy="130" r="40"/><circle cx="348" cy="148" r="28"/>
+            <rect x="326" y="165" width="12" height="40"/>
+          </g>
+          <!-- Hands / people -->
+          <g fill="rgba(200,150,100,0.6)">
+            <circle cx="200" cy="135" r="14"/>
+            <path d="M192,149 L185,195 L215,195 L208,149Z"/>
+          </g>
+          <text x="200" y="246" text-anchor="middle" fill="rgba(100,200,150,0.35)" font-family="'Syne',sans-serif" font-size="10" letter-spacing="3">NATRA WIELD · ECO VOLUNTEER</text>
+        </svg>
+      </div>
+      <div class="media-caption">Environmental campaign with Natra Wield NGO</div>
+    </div>
+    <div class="media-cell">
+      <div class="placeholder-img">
+        <svg viewBox="0 0 400 258" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;min-height:258px">
+          <rect width="400" height="258" fill="#100a18"/>
+          <!-- Seminar stage -->
+          <rect x="80" y="140" width="240" height="10" fill="rgba(200,150,60,0.3)" rx="2"/>
+          <!-- Presenter -->
+          <g fill="rgba(200,150,60,0.75)">
+            <circle cx="200" cy="100" r="16"/>
+            <path d="M190,116 L185,155 L215,155 L210,116Z"/>
+            <path d="M190,125 L160,140 L162,150 L190,135Z"/>
+            <path d="M210,125 L240,140 L238,150 L210,135Z"/>
+          </g>
+          <!-- Audience silhouettes -->
+          <g fill="rgba(120,100,80,0.45)">
+            <circle cx="80" cy="185" r="12"/><circle cx="115" cy="190" r="12"/>
+            <circle cx="150" cy="182" r="12"/><circle cx="200" cy="188" r="12"/>
+            <circle cx="250" cy="183" r="12"/><circle cx="285" cy="190" r="12"/>
+            <circle cx="320" cy="184" r="12"/>
+          </g>
+          <!-- Projector beam -->
+          <path d="M200,105 L130,140 L270,140Z" fill="rgba(200,150,60,0.06)"/>
+          <text x="200" y="246" text-anchor="middle" fill="rgba(200,150,60,0.35)" font-family="'Syne',sans-serif" font-size="10" letter-spacing="3">SWEAT ENERGY SEMINAR · 2020</text>
+        </svg>
+      </div>
+      <div class="media-caption">Presenting at NSS College seminar on sweat-based energy</div>
+    </div>
+  </div>
+
+  <p class="narrative reveal">
+    Giving back was never an obligation — it was a compulsion. At Volship India I joined other IT professionals to teach underprivileged students the fundamentals of computers. Some of those kids had never touched a laptop. <strong>Watching someone understand how a for-loop works for the first time is one of the most satisfying things I've experienced.</strong> It reminded me why I got into this field.
+  </p>
+</section>
+
+<!-- ═══════════════════════════════════════
+     CHAPTER 6 — VIDEO REEL
+═══════════════════════════════════════ -->
+<section class="chapter" id="ch6" style="background:var(--paper)">
+  <div class="chapter-num" style="color:#1e1c18">06</div>
+  <div class="chapter-header reveal">
+    <p class="chapter-tag">Motion · Moments · Memory</p>
+    <h2 class="chapter-title">Moving <em>pictures.</em></h2>
+  </div>
+
+  <!-- YouTube embed placeholder — replace src with your actual YouTube video IDs -->
+  <div class="media-grid cols-2 reveal">
+
+    <div class="yt-wrapper" id="yt1">
+      <!-- Replace VIDEO_ID_1 with actual YouTube video ID e.g. dQw4w9WgXcQ -->
+      <iframe id="yt1-iframe" src="" data-src="https://www.youtube.com/embed/VIDEO_ID_1?autoplay=1&rel=0" title="My adventure reel" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="display:none"></iframe>
+      <div class="yt-thumb" id="yt1-thumb" onclick="playYT('yt1')">
+        <div class="placeholder-img">
+          <svg viewBox="0 0 500 280" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;min-height:280px">
+            <rect width="500" height="280" fill="#0a1520"/>
+            <!-- Ocean video thumbnail -->
+            <path d="M0,180 Q125,155 250,170 Q375,185 500,165 L500,280 L0,280Z" fill="rgba(10,60,100,0.6)"/>
+            <path d="M0,160 Q125,140 250,155 Q375,170 500,155" stroke="rgba(100,180,220,0.3)" fill="none" stroke-width="1"/>
+            <circle cx="250" cy="100" r="50" fill="rgba(20,100,160,0.2)" stroke="rgba(100,200,240,0.3)" stroke-width="1"/>
+            <text x="250" y="50" text-anchor="middle" fill="rgba(200,220,255,0.5)" font-family="'Cormorant Garamond',serif" font-size="18" font-style="italic">Freediving · Kerala</text>
+          </svg>
+        </div>
+        <div class="video-play-btn">
+          <div class="play-circle">
+            <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="yt-wrapper" id="yt2">
+      <!-- Replace VIDEO_ID_2 with actual YouTube video ID -->
+      <iframe id="yt2-iframe" src="" data-src="https://www.youtube.com/embed/VIDEO_ID_2?autoplay=1&rel=0" title="MMA training" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="display:none"></iframe>
+      <div class="yt-thumb" id="yt2-thumb" onclick="playYT('yt2')">
+        <div class="placeholder-img">
+          <svg viewBox="0 0 500 280" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;min-height:280px">
+            <rect width="500" height="280" fill="#180a08"/>
+            <circle cx="250" cy="140" r="100" fill="rgba(200,60,30,0.08)" stroke="rgba(200,60,30,0.2)" stroke-width="1.5"/>
+            <g fill="rgba(200,150,60,0.6)">
+              <circle cx="200" cy="130" r="16"/>
+              <path d="M190,146 L180,200 L220,200 L210,146Z"/>
+              <circle cx="300" cy="130" r="16"/>
+              <path d="M290,146 L280,200 L320,200 L310,146Z"/>
+            </g>
+            <text x="250" y="50" text-anchor="middle" fill="rgba(200,150,60,0.5)" font-family="'Cormorant Garamond',serif" font-size="18" font-style="italic">MMA Training</text>
+          </svg>
+        </div>
+        <div class="video-play-btn">
+          <div class="play-circle">
+            <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Upload your own videos here — replace src attribute -->
+  <div class="media-grid cols-3 reveal" style="margin-top:3px">
+    <div class="video-cell" id="vid1">
+      <video poster="" preload="none" loop muted playsinline>
+        <!-- <source src="your-video-1.mp4" type="video/mp4"> -->
+      </video>
+      <div class="placeholder-img" style="min-height:220px">
+        <svg viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%">
+          <rect width="400" height="220" fill="#0e1a0a"/>
+          <!-- Wind turbines -->
+          <g stroke="rgba(27,107,107,0.7)" stroke-width="2" fill="none">
+            <line x1="100" y1="220" x2="100" y2="100"/>
+            <path d="M100,100 L80,50 L105,95Z"/>
+            <path d="M100,100 L150,85 L105,105Z"/>
+            <path d="M100,100 L70,120 L98,107Z"/>
+            <line x1="250" y1="220" x2="250" y2="80"/>
+            <path d="M250,80 L228,25 L255,75Z"/>
+            <path d="M250,80 L308,65 L255,85Z"/>
+            <path d="M250,80 L218,105 L248,88Z"/>
+          </g>
+          <path d="M0,160 Q100,148 200,158 Q300,168 400,155 L400,220 L0,220Z" fill="rgba(20,60,20,0.4)"/>
+          <text x="200" y="210" text-anchor="middle" fill="rgba(100,200,100,0.3)" font-family="'Syne',sans-serif" font-size="9" letter-spacing="3">WIND FARM VISIT</text>
+        </svg>
+      </div>
+      <div class="video-play-btn" onclick="playLocalVideo('vid1')">
+        <div class="play-circle"><svg viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg></div>
+      </div>
+      <div class="media-caption">Wind farm site visit — North Rhine-Westphalia</div>
+    </div>
+    <div class="media-cell">
+      <div class="placeholder-img">
+        <svg viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;min-height:220px">
+          <rect width="400" height="220" fill="#0a0a18"/>
+          <!-- Night city train -->
+          <rect x="0" y="120" width="400" height="8" fill="rgba(100,100,200,0.3)"/>
+          <g fill="rgba(40,40,100,0.8)">
+            <rect x="50" y="80" width="120" height="45" rx="4"/>
+            <rect x="175" y="85" width="115" height="40" rx="4"/>
+            <rect x="295" y="82" width="80" height="43" rx="4"/>
+          </g>
+          <g fill="rgba(255,220,100,0.5)">
+            <rect x="60" y="90" width="20" height="15" rx="1"/>
+            <rect x="90" y="90" width="20" height="15" rx="1"/>
+            <rect x="120" y="90" width="20" height="15" rx="1"/>
+            <rect x="185" y="93" width="16" height="12" rx="1"/>
+            <rect x="210" y="93" width="16" height="12" rx="1"/>
+          </g>
+          <text x="200" y="210" text-anchor="middle" fill="rgba(150,150,255,0.3)" font-family="'Syne',sans-serif" font-size="9" letter-spacing="3">NIGHT TRAIN · DORTMUND</text>
+        </svg>
+      </div>
+      <div class="media-caption">Late nights, early starts</div>
+    </div>
+    <div class="media-cell">
+      <div class="placeholder-img">
+        <svg viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;min-height:220px">
+          <rect width="400" height="220" fill="#180e08"/>
+          <!-- Festival / culture -->
+          <g fill="rgba(200,100,30,0.6)">
+            <path d="M160,200 L180,100 L200,200Z"/>
+            <path d="M200,200 L220,100 L240,200Z"/>
+          </g>
+          <g stroke="rgba(200,100,30,0.5)" fill="none" stroke-width="2">
+            <circle cx="200" cy="100" r="40"/>
+            <circle cx="200" cy="100" r="60" stroke-dasharray="8,6"/>
+          </g>
+          <!-- Lanterns -->
+          <g fill="rgba(255,180,50,0.6)">
+            <ellipse cx="120" cy="80" rx="15" ry="20"/><ellipse cx="280" cy="70" rx="12" ry="18"/>
+            <ellipse cx="200" cy="55" rx="13" ry="19"/>
+          </g>
+          <text x="200" y="210" text-anchor="middle" fill="rgba(200,100,30,0.35)" font-family="'Syne',sans-serif" font-size="9" letter-spacing="3">ONAM · KERALA</text>
+        </svg>
+      </div>
+      <div class="media-caption">Onam celebrations far from home</div>
+    </div>
+  </div>
+
+  <!-- Instructions for adding real media -->
+  <div class="reveal" style="margin-top:2rem; padding:1.5rem 2rem; border:1px dashed rgba(200,150,60,0.25); border-radius:2px; background:rgba(200,150,60,0.04)">
+    <p style="font-size:.7rem; letter-spacing:.12em; text-transform:uppercase; color:var(--gold); margin-bottom:.5rem;">📎 How to add your media</p>
+    <p style="font-size:.82rem; color:var(--mid); line-height:1.7;">
+      Replace the SVG placeholders with your actual images and videos:<br>
+      • <strong style="color:var(--warm)">Images:</strong> Add <code style="color:var(--gold)">&lt;img src="your-photo.jpg" alt="..."&gt;</code> inside any <code>.media-cell</code><br>
+      • <strong style="color:var(--warm)">YouTube:</strong> Replace <code style="color:var(--gold)">VIDEO_ID_1</code> / <code>VIDEO_ID_2</code> with your actual YouTube video IDs in the data-src attributes<br>
+      • <strong style="color:var(--warm)">Local videos:</strong> Add <code style="color:var(--gold)">&lt;source src="your-video.mp4"&gt;</code> inside the <code>&lt;video&gt;</code> tags
+    </p>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     CHAPTER 7 — THE BUILDER'S MIND
+═══════════════════════════════════════ -->
+<section class="chapter" id="ch7">
+  <div class="chapter-num">07</div>
+  <div class="chapter-header reveal">
+    <p class="chapter-tag">Vision · Future · Now</p>
+    <h2 class="chapter-title">What <em>drives</em><br>the machine.</h2>
+  </div>
+
+  <div class="split-row reveal">
+    <div class="split-text">
+      <p class="narrative" style="margin-top:0">
+        I didn't get into sustainable energy because it's fashionable. I got into it because as a teenager in Kerala I watched <strong>monsoon patterns shift</strong>, because I sat in a TATA Power plant during an internship and felt the weight of what it means to keep millions of people connected to electricity.
+      </p>
+      <p class="narrative">
+        The brain-controlled exoskeleton wasn't just a school project. It was a question: <strong>what if the boundary between human intention and physical action could dissolve?</strong> That question evolved — today it's about the boundary between energy generation and energy authentication, between renewable electrons and trusted data.
+      </p>
+      <p class="narrative">
+        Every dive, every fight on the mat, every anime episode finished at 2am, every line of code written in a second language in a country that isn't mine — it's all part of the same project. <strong>To understand the world deeply enough to change some small part of it.</strong>
+      </p>
+    </div>
+    <div class="split-img">
+      <div class="placeholder-img">
+        <svg viewBox="0 0 500 480" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;min-height:420px">
+          <rect width="500" height="480" fill="#080c10"/>
+          <!-- Grid world -->
+          <g stroke="rgba(27,107,107,0.15)" stroke-width="1">
+            <line x1="0" y1="80" x2="500" y2="80"/><line x1="0" y1="160" x2="500" y2="160"/>
+            <line x1="0" y1="240" x2="500" y2="240"/><line x1="0" y1="320" x2="500" y2="320"/>
+            <line x1="0" y1="400" x2="500" y2="400"/>
+            <line x1="80" y1="0" x2="80" y2="480"/><line x1="160" y1="0" x2="160" y2="480"/>
+            <line x1="240" y1="0" x2="240" y2="480"/><line x1="320" y1="0" x2="320" y2="480"/>
+            <line x1="400" y1="0" x2="400" y2="480"/>
+          </g>
+          <!-- Central energy node -->
+          <circle cx="250" cy="240" r="70" fill="url(#g1)" opacity=".5"/>
+          <circle cx="250" cy="240" r="45" fill="none" stroke="var(--teal)" stroke-width="1.5" opacity=".6"/>
+          <circle cx="250" cy="240" r="15" fill="rgba(200,150,60,0.8)"/>
+          <!-- Connection lines to satellites -->
+          <g stroke="rgba(200,150,60,0.3)" stroke-width="1" stroke-dasharray="5,4">
+            <line x1="250" y1="170" x2="250" y2="80"/><line x1="320" y1="240" x2="420" y2="240"/>
+            <line x1="180" y1="240" x2="80" y2="240"/><line x1="250" y1="310" x2="250" y2="400"/>
+            <line x1="300" y1="190" x2="380" y2="110"/><line x1="200" y1="290" x2="120" y2="370"/>
+          </g>
+          <!-- Satellite nodes -->
+          <g fill="rgba(27,107,107,0.8)">
+            <circle cx="250" cy="80" r="12"/><circle cx="420" cy="240" r="12"/>
+            <circle cx="80" cy="240" r="12"/><circle cx="250" cy="400" r="12"/>
+            <circle cx="380" cy="110" r="10"/><circle cx="120" cy="370" r="10"/>
+          </g>
+          <!-- Labels on nodes -->
+          <g fill="rgba(200,150,60,0.55)" font-family="'Syne',sans-serif" font-size="9" letter-spacing="2" text-anchor="middle">
+            <text x="250" y="65">ENERGY</text>
+            <text x="435" y="230">CODE</text>
+            <text x="65" y="230">OCEAN</text>
+            <text x="250" y="420">MIND</text>
+            <text x="395" y="100">PATENTS</text>
+            <text x="105" y="362">GIVE BACK</text>
+          </g>
+          <text x="250" y="248" text-anchor="middle" fill="rgba(240,237,232,0.8)" font-family="'Syne',sans-serif" font-size="11" font-weight="700" letter-spacing="2">SR</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <div class="pull-quote reveal">
+    <blockquote>
+      "The résumé tells you what I've done. <em>This page</em> tells you why."
+    </blockquote>
+    <cite>— Sreehari Ramachandran</cite>
+  </div>
+</section>
+
+<!-- STORY FOOTER -->
+<div class="story-footer reveal">
+  <a href="index.html" class="back-btn">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+    Back to Portfolio
+  </a>
+  <p class="footer-sig">Sreehari Ramachandran · The Untold Story</p>
+</div>
+
+<script>
+  // Cursor
+  const dot = document.getElementById('c-dot');
+  const ring = document.getElementById('c-ring');
+  let mx=0,my=0,rx=0,ry=0;
+  document.addEventListener('mousemove', e=>{mx=e.clientX;my=e.clientY;});
+  (function anim(){
+    rx+=(mx-rx)*.14; ry+=(my-ry)*.14;
+    dot.style.left=mx+'px'; dot.style.top=my+'px';
+    ring.style.left=rx+'px'; ring.style.top=ry+'px';
+    requestAnimationFrame(anim);
+  })();
+  document.querySelectorAll('a,button,.media-cell,.tl-item,.video-play-btn').forEach(el=>{
+    el.addEventListener('mouseenter',()=>document.body.classList.add('hov'));
+    el.addEventListener('mouseleave',()=>document.body.classList.remove('hov'));
+  });
+
+  // Sticky header
+  const hdr=document.getElementById('hdr');
+  window.addEventListener('scroll',()=>hdr.classList.toggle('stuck',window.scrollY>40));
+
+  // Scroll reveal
+  const obs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        e.target.classList.add('in');
+        obs.unobserve(e.target);
+      }
+    });
+  },{threshold:.08});
+  document.querySelectorAll('.reveal,.reveal-left,.reveal-right').forEach(el=>obs.observe(el));
+
+  // YouTube play
+  function playYT(id) {
+    const wrapper = document.getElementById(id);
+    const thumb = document.getElementById(id+'-thumb');
+    const iframe = document.getElementById(id+'-iframe');
+    iframe.src = iframe.dataset.src;
+    iframe.style.display = 'block';
+    wrapper.classList.add('active');
+  }
+
+  // Local video play
+  function playLocalVideo(id) {
+    const cell = document.getElementById(id);
+    const video = cell.querySelector('video');
+    const btn = cell.querySelector('.video-play-btn');
+    if (video.querySelector('source')) {
+      video.play();
+      btn.style.opacity = '0';
+      btn.style.pointerEvents = 'none';
+      cell.classList.add('playing');
+    }
+  }
+</script>
+</body>
+</html>
